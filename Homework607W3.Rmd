@@ -1,0 +1,116 @@
+---
+title: "Data607: Week 3"
+author: "Daniel Sullivan"
+date: "`r Sys.Date()`"
+output: openintro::lab_report
+---
+
+```{r load-packages, message=FALSE}
+library(tidyverse)
+library(openintro)
+
+```
+
+### Exercise 1
+
+```{r code-chunk-label}
+degree_data <-read.csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/college-majors/all-ages.csv")
+
+filtered_degree_data<- degree_data %>%
+  filter(grepl("*STATISTICS*", Major) | grepl("*DATA*", Major))
+
+```
+
+### Exercise 2
+
+my initial though was you wanted me to do something like this but at the end i started thinking otherwise. but it was good practice with the regex. I wasnt sure if you wanted the format vectorized or a string to handoff to another function so i did both. 
+
+```{r}
+fruits <- '[1] "bell pepper"  "bilberry"     "blackberry"   "blood orange"
+
+[5] "blueberry"    "cantaloupe"   "chili pepper" "cloudberry"  
+
+[9] "elderberry"   "lime"         "lychee"       "mulberry"    
+
+[13] "olive"        "salal berry"'
+fruits
+cleaned_data <- fruits%>%
+  str_replace_all(' ', "")%>%
+  str_extract_all('[a-zA-Z]*[a-zA-Z]')%>%
+  unlist()
+cleaned_data
+cleaned_fruit<- paste(cleaned_data, collapse=',')
+vec_value<- paste("c(",cleaned_fruit,")")
+vec_value
+```
+
+
+
+
+###Excercise 3
+Describe, in words, what these expressions will match:
+
+For this exercise I assumed that everything was in regex and not run as an expression for R functions. It was very ambiguous how this should have been interpreted because even with R should we assume we are copying into a function and there for those statements that are not in quotes would just cause an error or assume there are added quotes so most of these problems are searching for literals because of the double quotations?
+
+(.)\1\1
+
+would find a match for three consecutive letters.
+
+
+"(.)(.)\\2\\1"
+
+This would find a match with any two characters followed by \2\1 all contained in quotes. for example
+
+
+"ab\2\1"
+
+(..)\1
+
+This would match on repeating pairs of characters. for example banana the repeating anan would match.
+
+"(.).\\1.\\1"
+This would match "xy\1\1" with x and y being any character.
+
+
+"(.)(.)(.).*\\3\\2\\1"
+This would match on quotation followed by any 3 characters followed by \3\2\1" additionally there could be any number of characters between the three characters and the \3\2\1" due to the astrick.
+
+
+
+###Excercise 4
+
+note: I listed both in R and in Regex. The R expressions do not need any additional quotes if put in the expression for example if i were usin view on a string on the example of fruits the first expression the function would be entered as 
+
+str_view(fruit, "(.).*\\1$", match = TRUE)
+
+####Construct regular expressions to match words that:
+
+#####Start and end with the same character.
+
+in Regex: ^(.).*\1$
+in an R function: "^(.).*\\1$"
+
+#####Contain a repeated pair of letters (e.g. "church" contains "ch" repeated twice.)
+
+in Regex: (..).*\1
+in an R function: "(..).*\\1"
+
+#####Contain one letter repeated in at least three places (e.g. "eleven" contains three "e"s.)
+in regex: (.).*\1.*\1
+in an R function: "(.).*\\1.*\\1"
+
+
+
+
+
+
+
+
+
+
+
+
+
+...
+
+
